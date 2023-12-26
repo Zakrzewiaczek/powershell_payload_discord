@@ -1,4 +1,4 @@
-$hookurl = 'https://discord.com/api/webhooks/1188761336654598245/nqBAa-TZ2MK3N6gXtGWtaoIsSzI7Oza8KzuCXhu7ESpas18wGqLPNRRYcCUXhZ0vMi71'
+$hookurl = 'YOUR_WEBHOOK'
 
 
 #Sprawdzanie polaczenia z internetem (jezeli nie ma, wylacza program)
